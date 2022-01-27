@@ -1,5 +1,5 @@
-#button {
-  background-color: blue;
-  height: 100px;
-  width: 200px;
+#addButton {
+  background-color: rgb(104, 104, 175);
+  height: 50px;
+  width: 100px;
 }
