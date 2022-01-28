@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 // retrieves current fruits from DB
 app.get('/getFruits', crudController.getFruits, (req, res) => {
-  return res.status(200).json({ fruits: res.locals.fruits });
+  return res.status(200).json({ fruits: res.locals.fruitsArr });
 });
 
 app.post('/postFruits', crudController.postFruits, (req, res) => {

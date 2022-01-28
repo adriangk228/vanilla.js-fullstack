@@ -42,14 +42,20 @@ document.addEventListener('DOMContentLoaded', () => {
         'Content-Type': 'application/json',
       },
     }).then((res) => res.json());
-    console.log(response.fruits);
     let fruitArr = response.fruits;
     fruitArr.forEach((el) => {
-      console.log('from fetch: ', el.fruits);
+      idCache[el.id] = el.fruit;
+      console.log('idCache: ', idCache);
+
       const fruit = document.createElement('li');
-      fruit.innerText = el.fruits;
-      // fruit.setAttribute = ('id', idCache[])
+      fruit.innerText = el.fruit;
+
+      const button = document.createElement('button');
+      button.setAttribute = ('id', idCache[el.id]);
+      button.innerHTML = `Delete`;
+
       dbFruits.appendChild(fruit);
+      fruit.appendChild(button);
     });
   }
 });

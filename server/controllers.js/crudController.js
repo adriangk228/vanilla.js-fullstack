@@ -11,7 +11,7 @@ crudController.getFruits = async (req, res, next) => {
     const fruits = await db.query(query);
     if (fruits) {
       console.log(fruits.rows);
-      res.locals.fruits = fruits.rows;
+      res.locals.fruitsArr = fruits.rows;
       next();
     }
   } catch (err) {
@@ -22,7 +22,7 @@ crudController.getFruits = async (req, res, next) => {
 
 crudController.postFruits = async (req, res, next) => {
   const query = `
-  INSERT INTO fruits (fruits)
+  INSERT INTO fruits (fruit)
   VALUES ($1)
   RETURNING *
   `;
