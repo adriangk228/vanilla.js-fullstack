@@ -3,3 +3,23 @@
   height: 50px;
   width: 100px;
 }
+
+#getFruits {
+  background-color: rgb(104, 104, 175);
+  height: 50px;
+  width: 100px;
+}
+
+#fruitList {
+  background-color: cadetblue;
+  border: darkblue;
+  border-width: 5px;
+  min-height: 300px;
+}
+
+#dbFruits {
+  background-color: darkkhaki;
+  border: darkred;
+  border-width: 5px;
+  min-height: 300px;
+}

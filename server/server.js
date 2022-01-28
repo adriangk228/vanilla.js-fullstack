@@ -18,9 +18,9 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../views/index.html'));
 });
 
-// app.get('/getFruits', crudController.getFruits, (req, res) => {
-//   return res.status(200).json({ fruits: res.locals.fruits });
-// });
+app.get('/getFruits', crudController.getFruits, (req, res) => {
+  return res.status(200).json({ fruits: res.locals.fruits });
+});
 
 // global error handler
 app.use((err, req, res, next) => {
