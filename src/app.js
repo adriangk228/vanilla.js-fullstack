@@ -11,10 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const idCache = {};
 
   async function addFruitFunc() {
-    // const clickConfirm = document.createElement('p');
-    // clickConfirm.innerText = fruitInput.value;
-    // fruitList.appendChild(clickConfirm);
-
     const newFruit = fruitInput.value;
     if (newFruit) {
       const response = await fetch('/postFruits', {
@@ -24,15 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ fruit: newFruit }),
       }).then((res) => res.json());
-      console.log('new fruit added!');
+      console.log('RESPONSE: ', response);
+
+      idCache[response.fruit.id] = response.fruit.fruit;
+
       const fruit = document.createElement('li');
       fruit.innerText = newFruit;
-      const newDelButton = document.createElement('button');
-      newDelButton.innerHTML = '<button id>Delete Fruit</button>';
+
+      const button = document.createElement('button');
+      button.setAttribute = ('id', response.id);
+      button.innerHTML = `Delete`;
+
       dbFruits.appendChild(fruit);
+      fruit.appendChild(button);
     } else {
       window.alert('please make a new fruit');
     }
+    console.log('CACHE POST: ', idCache);
   }
 
   async function getFruitsFunc() {
@@ -45,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let fruitArr = response.fruits;
     fruitArr.forEach((el) => {
       idCache[el.id] = el.fruit;
-      console.log('idCache: ', idCache);
 
       const fruit = document.createElement('li');
       fruit.innerText = el.fruit;

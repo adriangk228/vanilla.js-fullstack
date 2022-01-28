@@ -21,17 +21,28 @@ crudController.getFruits = async (req, res, next) => {
 };
 
 crudController.postFruits = async (req, res, next) => {
-  const query = `
+  const postQuery = `
   INSERT INTO fruits (fruit)
   VALUES ($1)
   RETURNING *
   `;
+  const findQuery = `
+  SELECT f.fruit, f.id FROM fruits f
+  WHERE f.fruit=$1
+  `;
+
   const value = [req.body.fruit];
 
   try {
-    const addFruit = await db.query(query, value);
+    const addFruit = await db.query(postQuery, value);
     if (addFruit) {
       console.log('IN CONTROLLER: added new fruit to db!');
+    }
+
+    const findFruit = await db.query(findQuery, value);
+    if (findFruit) {
+      res.locals.fruit = findFruit.rows[0];
+      console.log('from controller: ', findFruit.rows[0]);
       next();
     }
   } catch (err) {

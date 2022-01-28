@@ -25,7 +25,7 @@ app.get('/getFruits', crudController.getFruits, (req, res) => {
 });
 
 app.post('/postFruits', crudController.postFruits, (req, res) => {
-  return res.status(200).json({ message: 'successful post!' });
+  return res.status(200).json({ fruit: res.locals.fruit });
 });
 
 // global error handler
