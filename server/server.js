@@ -6,20 +6,26 @@ const PORT = 3000;
 const app = express();
 const authController = require('./controllers.js/authController');
 const crudController = require('./controllers.js/crudController');
+const { response } = require('express');
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.resolve(__dirname, '../assets')));
+app.use(express.static(path.resolve(__dirname, '../src')));
 
 // serve index.html on route '/'
 app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../views/index.html'));
 });
 
+// retrieves current fruits from DB
 app.get('/getFruits', crudController.getFruits, (req, res) => {
   return res.status(200).json({ fruits: res.locals.fruits });
+});
+
+app.post('/postFruits', crudController.postFruits, (req, res) => {
+  return res.status(200).json({ message: 'successful post!' });
 });
 
 // global error handler
