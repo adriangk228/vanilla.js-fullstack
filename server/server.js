@@ -30,7 +30,7 @@ app.post('/postFruits', crudController.postFruits, (req, res) => {
 });
 
 // deletes an existing fruit from the DB and returns the fruit that was just deleted
-app.delete('/deleteFruit', crudController.deleteFruit, (req, res) => {
+app.delete('/deleteFruit/:id', crudController.deleteFruit, (req, res) => {
   return res.status(200).json({ message: 'fruit deleted! exiting route' });
 });
 

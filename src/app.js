@@ -15,29 +15,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const fruit = document.createElement('li');
       fruit.innerText = newFruit;
+      fruit.setAttribute('id', response.fruit.id);
 
       const button = document.createElement('button');
       button.classList.add('deleteButton');
-      button.setAttribute('id', response.fruit.id);
       button.innerHTML = `Delete`;
+      button.addEventListener('click', () =>
+        deleteFruitsFunc(response.fruit.id)
+      );
 
       dbFruits.appendChild(fruit);
       fruit.appendChild(button);
+
+      fruitInput.value = '';
     } else {
       window.alert('please make a new fruit');
     }
   }
 
   // this should work, but I haven't tested it yet (delete working with postman)
-  async function deleteFruitsFunc() {
-    const response = await fetch('/deleteFruit', {
+  async function deleteFruitsFunc(id) {
+    const response = await fetch(`/deleteFruit/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ fruit: 'miamia' }), // <-- CHANGE TO ACTUAL VALUE
+      // body: JSON.stringify({ id }),
     }).then((res) => res.json());
-    console.log('RES: ', res);
+    console.log('RES: ', response);
+    const el = document.getElementById(id);
+    el.remove();
   }
 
   async function getFruitsFunc() {
@@ -59,9 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = document.createElement('button');
         button.className = 'deleteButton';
         button.innerHTML = `Delete`;
-        button.addEventListener('click', () => {
-          logFruitFunc(el.id);
-        });
+        button.addEventListener('click', () => deleteFruitsFunc(el.id));
 
         dbFruits.appendChild(fruit);
         fruit.appendChild(button);
@@ -70,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // testing id's on the buttons when I click them
-  // will hook up to delete function later
   function logFruitFunc(id) {
     console.log('logFruitFunk clicked: ', id);
 
@@ -86,21 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addButton = document.getElementById('addButton');
   const getFruits = document.getElementById('getFruits');
   const dbFruits = document.getElementById('dbFruits');
-  // const allDelButton = document.getElementsByClassName('deleteButton');
 
   addButton.addEventListener('click', addFruitFunc);
   getFruits.addEventListener('click', getFruitsFunc);
-
-  // console.log('line 89: ', allDelButton);
-
-  // allDelButton.map((el) => {
-  //   console.log(el);
-  // });
-
-  // const testSam = document.querySelectorAll('.deleteButton');
-  // console.log('SAM ', testSam);
-
-  // document.querySelectorAll('.deleteButton').forEach((el) => {
-  //   el.addEventListener('click', logFruitFunc());
-  // });
 });

@@ -21,6 +21,8 @@ crudController.getFruits = async (req, res, next) => {
 };
 
 crudController.postFruits = async (req, res, next) => {
+  // values are fruit name & const date = new Date.tolocalestring()
+
   const postQuery = `
   INSERT INTO fruits (fruit)
   VALUES ($1)
@@ -54,15 +56,15 @@ crudController.postFruits = async (req, res, next) => {
 crudController.deleteFruit = async (req, res, next) => {
   const deleteQuery = `
   DELETE FROM fruits
-  WHERE fruit=$1
+  WHERE id=$1
   RETURNING *
   `;
-  let value = [req.body.fruit];
+  let value = [req.params.id];
 
   try {
     const deleteFruit = await db.query(deleteQuery, value);
     if (deleteFruit) {
-      console.log(`IN CONTROLLER: just deleted ${req.body.fruit}`);
+      console.log(`IN CONTROLLER: just deleted ${value}`);
     }
     next();
   } catch (err) {
