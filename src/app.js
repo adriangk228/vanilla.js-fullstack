@@ -1,13 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // console.log('Hello');
-  const fruitInput = document.getElementById('fruitInput');
-  const addButton = document.getElementById('addButton');
-  const getFruits = document.getElementById('getFruits');
-  const dbFruits = document.getElementById('dbFruits');
-
-  addButton.addEventListener('click', addFruitFunc);
-  getFruits.addEventListener('click', getFruitsFunc);
-
   const idCache = {};
 
   async function addFruitFunc() {
@@ -20,15 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ fruit: newFruit }),
       }).then((res) => res.json());
-      console.log('RESPONSE: ', response);
-
       idCache[response.fruit.id] = response.fruit.fruit;
 
       const fruit = document.createElement('li');
       fruit.innerText = newFruit;
 
       const button = document.createElement('button');
-      button.setAttribute = ('id', response.id);
+      button.classList.add('deleteButton');
+      button.setAttribute('id', response.fruit.id);
       button.innerHTML = `Delete`;
 
       dbFruits.appendChild(fruit);
@@ -36,7 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       window.alert('please make a new fruit');
     }
-    console.log('CACHE POST: ', idCache);
+  }
+
+  // this should work, but I haven't tested it yet (delete working with postman)
+  async function deleteFruitsFunc() {
+    const response = await fetch('/deleteFruit', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ fruit: 'miamia' }), // <-- CHANGE TO ACTUAL VALUE
+    }).then((res) => res.json());
+    console.log('RES: ', res);
   }
 
   async function getFruitsFunc() {
@@ -48,17 +49,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then((res) => res.json());
     let fruitArr = response.fruits;
     fruitArr.forEach((el) => {
-      idCache[el.id] = el.fruit;
+      if (!idCache[el.id]) {
+        idCache[el.id] = el.fruit;
 
-      const fruit = document.createElement('li');
-      fruit.innerText = el.fruit;
+        const fruit = document.createElement('li');
+        fruit.innerText = el.fruit;
+        fruit.setAttribute('id', el.id);
 
-      const button = document.createElement('button');
-      button.setAttribute = ('id', idCache[el.id]);
-      button.innerHTML = `Delete`;
+        const button = document.createElement('button');
+        button.className = 'deleteButton';
+        button.innerHTML = `Delete`;
+        button.addEventListener('click', () => {
+          logFruitFunc(el.id);
+        });
 
-      dbFruits.appendChild(fruit);
-      fruit.appendChild(button);
+        dbFruits.appendChild(fruit);
+        fruit.appendChild(button);
+      }
     });
   }
+
+  // testing id's on the buttons when I click them
+  // will hook up to delete function later
+  function logFruitFunc(id) {
+    console.log('logFruitFunk clicked: ', id);
+
+    if (idCache[id]) {
+      window.alert(`you just clicked ${idCache[id]}`);
+    }
+
+    const el = document.getElementById(id);
+    el.remove();
+  }
+
+  const fruitInput = document.getElementById('fruitInput');
+  const addButton = document.getElementById('addButton');
+  const getFruits = document.getElementById('getFruits');
+  const dbFruits = document.getElementById('dbFruits');
+  // const allDelButton = document.getElementsByClassName('deleteButton');
+
+  addButton.addEventListener('click', addFruitFunc);
+  getFruits.addEventListener('click', getFruitsFunc);
+
+  // console.log('line 89: ', allDelButton);
+
+  // allDelButton.map((el) => {
+  //   console.log(el);
+  // });
+
+  // const testSam = document.querySelectorAll('.deleteButton');
+  // console.log('SAM ', testSam);
+
+  // document.querySelectorAll('.deleteButton').forEach((el) => {
+  //   el.addEventListener('click', logFruitFunc());
+  // });
 });

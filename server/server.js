@@ -24,8 +24,14 @@ app.get('/getFruits', crudController.getFruits, (req, res) => {
   return res.status(200).json({ fruits: res.locals.fruitsArr });
 });
 
+// adds a new fruit to the DB and returns the fruit that was just added
 app.post('/postFruits', crudController.postFruits, (req, res) => {
   return res.status(200).json({ fruit: res.locals.fruit });
+});
+
+// deletes an existing fruit from the DB and returns the fruit that was just deleted
+app.delete('/deleteFruit', crudController.deleteFruit, (req, res) => {
+  return res.status(200).json({ message: 'fruit deleted! exiting route' });
 });
 
 // global error handler

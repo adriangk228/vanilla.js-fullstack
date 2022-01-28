@@ -51,4 +51,24 @@ crudController.postFruits = async (req, res, next) => {
   }
 };
 
+crudController.deleteFruit = async (req, res, next) => {
+  const deleteQuery = `
+  DELETE FROM fruits
+  WHERE fruit=$1
+  RETURNING *
+  `;
+  let value = [req.body.fruit];
+
+  try {
+    const deleteFruit = await db.query(deleteQuery, value);
+    if (deleteFruit) {
+      console.log(`IN CONTROLLER: just deleted ${req.body.fruit}`);
+    }
+    next();
+  } catch (err) {
+    console.log(`error: ${err}`);
+    next();
+  }
+};
+
 module.exports = crudController;
