@@ -16,7 +16,19 @@ app.use(express.static(path.resolve(__dirname, '../src')));
 
 // serve index.html on route '/'
 app.get('/', (req, res) => {
-  return res.status(200).sendFile(path.join(__dirname, '../views/index.html'));
+  return res.status(200).sendFile(path.join(__dirname, '../views/login.html'));
+});
+
+// if successful sign-in, redirect to /index route
+app.post('/signin', authController.verifyLogin, (req, res) => {
+  return res.status(200).redirect('/index');
+});
+
+// if cookie is present, serve index.html file
+app.get('/index', authController.cookie, (req, res) => {
+  return res
+    .status(200)
+    .sendFile(path.resolve(__dirname, '../views/index.html'));
 });
 
 // retrieves current fruits from DB
